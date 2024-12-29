@@ -1,0 +1,77 @@
+<!-- app/views/golfers/index.html.erb -->
+
+<div class="container mt-4">
+  <h2 class="text-center">Golfers List</h2>
+
+  <!-- Add a search or filter feature (optional) -->
+  <div class="mb-3 text-right">
+    <%= link_to 'New Golfer', new_golfer_path, class: 'btn btn-primary' %>
+  </div>
+
+  <!-- Table of Golfers -->
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Membership Code</th>
+        <th>Entry Fee</th>
+        <th>Membership Type</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @golfers.each do |golfer| %>
+        <tr>
+          <td><%= golfer.id %></td>
+          <td><%= golfer.name %></td>
+          <td><%= golfer.email %></td>
+          <td><%= golfer.mobile %></td>
+          <td><%= golfer.membership_code %></td>
+          <td><%= golfer.entry_fee %></td>
+          <td><%= golfer.membership_category.name %></td>
+          <td>
+            <%= link_to 'Show', golfer_path(golfer), class: 'btn btn-info btn-sm' %>
+            <%= link_to 'Edit', edit_golfer_path(golfer), class: 'btn btn-warning btn-sm' %>
+            <%= link_to 'Delete', golfer_path(golfer), data: { confirm: 'Are you sure?', "turbo-method": :delete }, class: 'btn btn-danger btn-sm' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<style>
+
+table {
+  width: 100%;
+  margin-top: 20px;
+}
+
+th, td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.btn {
+  padding: 5px 10px;
+}
+
+/* Add some space between rows */
+tr {
+  transition: background-color 0.3s ease;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+</style>

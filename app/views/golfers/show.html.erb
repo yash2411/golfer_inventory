@@ -1,0 +1,117 @@
+<h1 class="golfer-details-header">Golfer Details</h1>
+
+<div class="golfer-details">
+  <div class="golfer-info">
+    <h2>Main Golfer Information</h2>
+    <p><strong>Name:</strong> <%= @golfer.name %></p>
+    <p><strong>Email:</strong> <%= @golfer.email %></p>
+    <p><strong>Mobile:</strong> <%= @golfer.mobile %></p>
+    <p><strong>Membership Code:</strong> <%= @golfer.membership_code %></p>
+    <p><strong>Entry Fee:</strong> ₹<%= @golfer.entry_fee %></p>
+    <p><strong>Membership Start Date:</strong> <%= @golfer.membership_date.strftime('%B %d, %Y') %></p>
+    <p><strong>Membership Expiry Date:</strong> <%= @golfer.expiry_date.strftime('%B %d, %Y') %></p>
+    <p><strong>Quarterly Membership Fee:</strong> ₹<%= @quarterly_fee %></p>
+  </div>
+
+  <% if @golfer.is_dependent %>
+   <% if @golfer.dependent_of %>
+  <div class="dependent-info">
+    <h3>Dependent Information</h3>
+    <p><strong>Main Golfer:</strong> <%= @golfer.main_member.name %></p>
+    <p><strong>Membership Code:</strong> <%= @golfer.membership_code %></p>
+  </div>
+<% end %>
+
+  <% end %>
+
+  <% if @golfer.dependents.any? %>
+    <div class="dependents-list">
+      <h3>Dependents</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Membership Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @golfer.dependents.each do |dependent| %>
+            <tr>
+              <td><%= dependent.name %></td>
+              <td><%= dependent.membership_code %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p>This golfer has no dependents.</p>
+  <% end %>
+
+  <div class="back-link">
+    <%= link_to "Back to Golfers List", golfers_path, class: "btn btn-secondary" %>
+  </div>
+</div>
+
+<style>
+  .golfer-details-header {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .golfer-details {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .golfer-info, .dependent-info, .dependents-list {
+    margin-bottom: 20px;
+  }
+
+  .golfer-info p, .dependent-info p {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .dependents-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .dependents-list th, .dependents-list td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd
+  }
+
+  .dependents-list th {
+    background-color: #f2f2f2;
+  }
+
+  .back-link {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+
+  .btn:hover {
+    opacity: 0.9;
+  }
+</style>

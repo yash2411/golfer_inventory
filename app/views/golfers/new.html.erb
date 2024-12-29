@@ -1,0 +1,173 @@
+<h1 class="form-header">Add New Golfer</h1>
+
+<%= form_with(model: @golfer, local: true, class: "golfer-form") do |form| %>
+  <% if @golfer.errors.any? %>
+    <div class="error-explanation">
+      <h2><%= pluralize(@golfer.errors.count, "error") %> prohibited this golfer from being saved:</h2>
+      <ul>
+        <% @golfer.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name, "Golfer Name" %>
+    <%= form.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :email, "Email" %>
+    <%= form.email_field :email, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :mobile, "Mobile" %>
+    <%= form.text_field :mobile, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :membership_code, "Membership Code" %>
+    <%= form.text_field :membership_code, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :entry_fee, "Entry Fee (₹)" %>
+    <%= form.number_field :entry_fee, class: "form-control", step: 0.01, required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :membership_category_id, class: 'form-label' %>
+    <%= form.collection_select :membership_category_id, MembershipCategory.all, :id, :name, { prompt: 'Select Membership Category' }, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :membership_date, "Membership Start Date" %>
+    <%= form.date_select :membership_date, start_year: Date.today.year, end_year: Date.today.year + 20, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :expiry_date, "Membership Expiry Date" %>
+    <%= form.date_select :expiry_date, start_year: Date.today.year, end_year: Date.today.year + 20, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :is_dependent, "Is Dependent?" %>
+    <%= form.check_box :is_dependent, class: "form-check-input" %>
+  </div>
+
+  <div id="dependent-section" class="dependent-section">
+    <%= form.label :dependent_of, "Main Member" %>
+    <%= form.collection_select :dependent_of, Golfer.where(is_dependent: [false, nil]), :id, :name, prompt: "Select Main Member", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Save Golfer", class: "btn btn-primary btn-block" %>
+  </div>
+<% end %>
+
+<div class='mx-auto'>
+    <%= link_to "Back to Golfers List", golfers_path, class: "btn btn-secondary" %>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const isDependentCheckbox = document.querySelector("#golfer_is_dependent");
+    const dependentSection = document.querySelector("#dependent-section");
+
+    isDependentCheckbox.addEventListener("change", function() {
+      if (this.checked) {
+        dependentSection.style.display = "block";
+      } else {
+        dependentSection.style.display = "none";
+      }
+    });
+  });
+</script>
+
+<style>
+  .golfer-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  .form-check-input {
+    margin-top: 5px;
+  }
+
+  .dependent-section {
+    display: none;
+    margin-top: 20px;
+  }
+
+  .error-explanation {
+    color: red;
+    margin-bottom: 20px;
+  }
+
+  .error-explanation h2 {
+    font-weight: bold;
+  }
+
+  .error-explanation ul {
+    padding-left: 20px;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    margin-top: 10px;
+  }
+
+  .btn:hover {
+    opacity: 0.9;
+  }
+
+  .btn-block {
+    width: 100%;
+  }
+</style>
